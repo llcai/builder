@@ -20,7 +20,7 @@ class ModelDependency(models.Model):
     # the module corresponding to the dependency, and its status
     dependency_module_id = fields.Many2one('ir.module.module', 'Dependency', store=False, search=True)
     dependency_project_id = fields.Many2one('builder.ir.module.module', 'Dependency', store=False, search=True)
-    dependency_module_name = fields.Char('Dependency', select=True)
+    dependency_module_name = fields.Char('Dependency', index=True)
 
     @api.one
     @api.depends('dependency_module_id', 'dependency_project_id', 'dependency_module_name')

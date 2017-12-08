@@ -80,9 +80,9 @@ class WorkflowTransition(models.Model):
     group_id = fields.Many2one('res.groups', 'Group Required', help="The group that a user must have to be authorized to validate this transition.")
     condition = fields.Char('Condition', required=True,
                             help="Expression to be satisfied if we want the transition done.", default='True')
-    act_from = fields.Many2one('builder.workflow.activity', 'Source Activity', required=True, select=True, ondelete='cascade',
+    act_from = fields.Many2one('builder.workflow.activity', 'Source Activity', required=True, index=True, ondelete='cascade',
                                     help="Source activity. When this activity is over, the condition is tested to determine if we can start the ACT_TO activity.")
-    act_to = fields.Many2one('builder.workflow.activity', 'Destination Activity', required=True, select=True, ondelete='cascade',
+    act_to = fields.Many2one('builder.workflow.activity', 'Destination Activity', required=True, index=True, ondelete='cascade',
                                   help="The destination activity.")
-    wkf_id = fields.Many2one('builder.workflow', related='act_from.wkf_id', string='Workflow', select=True)
+    wkf_id = fields.Many2one('builder.workflow', related='act_from.wkf_id', string='Workflow', index=True)
 

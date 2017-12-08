@@ -7,6 +7,8 @@
             <field name="model">builder.ir.ui.menu</field>
             <field name="arch" type="xml">
                 <tree string="Menu">
+                    
+                    <field name="module_id"/>
                     <field name="morder" widget="handle"/>
                     <field name="sequence"/>
                     <field name="xml_id"/>
@@ -23,6 +25,9 @@
                     <sheet>
                         <group>
                             <group>
+
+                                <field name="module_id"/>
+                            
                                 <field name="name"/>
                                 <field name="xml_id"/>
                                 <field name="parent_type"/>

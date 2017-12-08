@@ -1,4 +1,4 @@
-from openerp import models, fields, api, pooler
+from openerp import models, fields, api
 from openerp.api import Environment
 
 __author__ = 'deimos'

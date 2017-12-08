@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from urllib import urlencode
 
-from openerp.addons.web import http
-from openerp.addons.web.http import request
-from openerp.tools.mail import html_sanitize
+from openerp import http
+from openerp.http import request
 
 
 class WebsiteDesigner(http.Controller):
-
     @http.route('/builder/designer', type='http', auth="user", website=True)
     def designer(self, model, res_id, field, return_url=None, **kw):
         if not model or not model in request.registry or not res_id:
@@ -38,7 +35,6 @@ class WebsiteDesigner(http.Controller):
         }
 
         return request.website.render("builder.designer", values)
-
 
     @http.route('/builder/page/designer', type='http', auth="user", website=True)
     def index(self, model, res_id, **kw):

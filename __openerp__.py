@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Soluciones Moebius (<http://www.solucionesmoebius.com>).
+#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,10 +19,9 @@
 #
 ##############################################################################
 
-# noinspection PyStatementEffect
 {
     'name': 'Module Builder',
-    'version': '0.1',
+    'version': '1.10',
     'category': 'Programming',
     'summary': 'Build your modules right inside Odoo',
     'description': """
@@ -33,7 +32,7 @@ This module aims to help in the development of new modules
     'author': 'Soluciones Moebius',
     #"license": "AGPL-3",
     'website': 'http://www.solucionesmoebius.com/',
-    'depends': ['web', 'web_diagram', 'website'],
+    'depends': ['web', 'web_diagram', 'website'], #,'software'
     'data': [
         # 'security/base_security.xml',
         # 'security/ir.model.access.csv',

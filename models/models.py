@@ -11,9 +11,9 @@ class IrModel(models.Model):
     _rec_name = 'model'
 
     sequence = fields.Integer('Sequence')
-    module_id = fields.Many2one('builder.ir.module.module', 'Module', required=True, select=1, ondelete='cascade')
+    module_id = fields.Many2one('builder.ir.module.module', 'Module', required=True, index=1, ondelete='cascade')
     name = fields.Char('Description', required=True)
-    model = fields.Char('Model', required=True, select=1)
+    model = fields.Char('Model', required=True, index=1)
     info = fields.Text('Information')
     rec_name_field_id = fields.Many2one('builder.ir.model.fields', 'Record Name', compute='_compute_rec_name_field_id',
                                         inverse='_inverse_rec_name_field_id',

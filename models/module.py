@@ -37,7 +37,7 @@ class Module(models.Model):
     def _get_categories(self):
         return [(c.name, c.name) for c in self.env['ir.module.category'].search([])]
 
-    name = fields.Char("Technical Name", required=True, select=True)
+    name = fields.Char("Technical Name", required=True, index=True)
     category_id = fields.Selection(simple_selection('ir.module.category', 'name') , 'Category')
     shortdesc = fields.Char('Module Name', translate=True, required=True)
     summary = fields.Char('Summary', translate=True)
@@ -258,7 +258,7 @@ javascript:(function(){
             'view_mode': 'tree,form',
             'res_model': 'builder.ir.ui.menu',
             'views': [(False, 'tree'), (False, 'form')],
-            'domain': [('module_id', '=', self.id)],
+            #'domain': [('module_id', '=', self.id)],
             # 'target': 'current',
             'context': {
                 'default_module_id': self.id

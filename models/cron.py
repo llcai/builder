@@ -1,19 +1,15 @@
 import logging
 from openerp.addons.base.ir.ir_cron import str2tuple
-import threading
-import time
 import psycopg2
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-import pytz
 
-import openerp
-from openerp import SUPERUSER_ID, netsvc, api
-from openerp.osv import fields, osv
+from openerp.osv import osv
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.tools.safe_eval import safe_eval as eval
 from openerp.tools.translate import _
 from openerp.modules import load_information_from_description_file
+
+from openerp import fields
 
 _logger = logging.getLogger(__name__)
 
@@ -29,22 +25,19 @@ class ir_cron(osv.osv):
 
     _name = "builder.ir.cron"
     _order = 'name'
-    _columns = {
-        'module_id': fields.many2one('builder.ir.module.module', 'Module', ondelete='cascade'),
-
-        'name': fields.char('Name', required=True),
-        'active': fields.boolean('Active'),
-        'interval_number': fields.integer('Interval Number',help="Repeat every x."),
-        'interval_type': fields.selection( [('minutes', 'Minutes'),
-            ('hours', 'Hours'), ('work_days','Work Days'), ('days', 'Days'),('weeks', 'Weeks'), ('months', 'Months')], 'Interval Unit'),
-        'numbercall': fields.integer('Number of Calls', help='How many times the method is called,\na negative number indicates no limit.'),
-        'doall' : fields.boolean('Repeat Missed', help="Specify if missed occurrences should be executed when the server restarts."),
-        'nextcall' : fields.datetime('Next Execution Date', help="Next planned execution date for this job."),
-        'model_id': fields.many2one('builder.ir.model', 'Object', help="Model name on which the method to be called is located, e.g. 'res.partner'."),
-        'model_method_id': fields.many2one('builder.ir.model.method', 'Method', help="Name of the method to be called when this job is processed."),
-        'args': fields.text('Arguments', help="Arguments to be passed to the method, e.g. (uid,)."),
-        'priority': fields.integer('Priority', help='The priority of the job, as an integer: 0 means higher priority, 10 means lower priority.')
-    }
+    module_id=fields.Many2one('builder.ir.module.module', 'Module', ondelete='cascade')
+    name=fields.Char('Name', required=True)
+    active=fields.Boolean('Active')
+    interval_number=fields.Integer('Interval Number',help="Repeat every x.")
+    interval_type=fields.Selection( [('minutes', 'Minutes'),
+        ('hours', 'Hours'), ('work_days','Work Days'), ('days', 'Days'),('weeks', 'Weeks'), ('months', 'Months')], 'Interval Unit')
+    numbercall=fields.Integer('Number of Calls', help='How many times the method is called,\na negative number indicates no limit.')
+    doall= fields.Boolean('Repeat Missed', help="Specify if missed occurrences should be executed when the server restarts.")
+    nextcall= fields.Datetime('Next Execution Date', help="Next planned execution date for this job.")
+    model_id=fields.Many2one('builder.ir.model', 'Object', help="Model name on which the method to be called is located, e.g. 'res.partner'.")
+    model_method_id=fields.Many2one('builder.ir.model.method', 'Method', help="Name of the method to be called when this job is processed.")
+    args=fields.Text('Arguments', help="Arguments to be passed to the method, e.g. (uid,).")
+    priority=fields.Integer('Priority', help='The priority of the job, as an integer: 0 means higher priority, 10 means lower priority.')
 
     _defaults = {
         'priority' : 5,

@@ -72,7 +72,7 @@
                                     <tree string="Rules">
                                         <field name="name"/>
                                         <field name="model_id" domain="[('module_id', '=', parent.module_id)]"/>
-                                        <field name="global"/>
+                                        <field name="global_"/>
                                     </tree>
                                 </field>
                             </page>
@@ -102,7 +102,7 @@
                 <tree string="Record rules">
                     <field name="model_id"/>
                     <field name="name"/>
-                    <field name="global"/>
+                    <field name="global_"/>
                     <field name="domain"/>
                     <field name="perm_read"/>
                     <field name="perm_write"/>
@@ -133,8 +133,8 @@
                     </group>
                     <separator string="Rule Definition (Domain Filter)"/>
                     <field name="domain" colspan="2" nolabel="1"/>
-                    <group string="Groups (no group = global)">
-                        <field name="global"/>
+                    <group string="Groups (no group = global_)">
+                        <field name="global_"/>
                         <field name="groups" nolabel="1" colspan="4"/>
                     </group>
                     <group string="Interaction between rules">

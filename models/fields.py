@@ -2,15 +2,16 @@ import logging
 
 from .utils import get_field_types
 
+#from openerp.addons.base import _get_field_types as get_field_types
+
 from openerp.exceptions import except_orm
 from openerp import models, api, fields, _
+from openerp import fields  as fields_old
 
+import types
 
 __author__ = 'one'
-
-
 _logger = logging.getLogger(__name__)
-
 
 def snake_case(name, prefix=None, suffix=None):
     return (prefix or '') + (name or '').replace('.', '_') + (suffix or '')
@@ -30,16 +31,37 @@ class IrFields(models.Model):
     _order = 'model_id, position asc'
     _description = 'Fields'
     _rec_name = 'name'
+    @api.model
+    def _get_fields_type_selection(self):
+        context = {}
+        # Avoid too many nested `if`s below, as RedHat's Python 2.6
+        # break on it. See bug 939653.
+        for i in fields_old.__dict__.iteritems():
+            print i
+        r= sorted([
+            (k, k) for k, v in fields_old.__dict__.iteritems()
+            if type(v) == types.TypeType and \
+            #issubclass(v, fields_old._column) and \
+            #v != fields_old._column and \
+            #not v._deprecated and \
+            # not issubclass(v, fields_old.function)])
+            #not issubclass(v, fields_old.function) and \
+            (not context.get('from_diagram', False) or (
+                context.get('from_diagram', False) and (k in ['one2many', 'many2one', 'many2many'])))
 
-    model_id = fields.Many2one('builder.ir.model', 'Model', select=1, ondelete='cascade')
+        ])
+        print r
+        return r
+
+    model_id = fields.Many2one('builder.ir.model', 'Model', index=1, ondelete='cascade')
     module_id = fields.Many2one('builder.ir.module.module', 'Module', related='model_id.module_id')
     special_states_field_id = fields.Many2one('builder.ir.model.fields', related='model_id.special_states_field_id',
                                               string='States Field')
 
-    name = fields.Char('Name', required=True, select=1)
+    name = fields.Char('Name', required=True, index=1)
 
     position = fields.Integer('Position')
-    complete_name = fields.Char('Complete Name', select=1)
+    complete_name = fields.Char('Complete Name', index=1)
 
     relation = fields.Char('Object Relation',
                            help="For relationship fields, the technical name of the target model")
@@ -61,7 +83,28 @@ class IrFields(models.Model):
 
     field_description = fields.Char('Field Label')
     related = fields.Char('Related')
-    ttype = fields.Selection(get_field_types, 'Field Type', required=True)
+    #ttype = fields.Selection(_get_fields_type_selection, string='Field Type', required=True)
+    #ttype = fields.Selection(get_field_types, string='Field Type', required=True)
+    ttype = fields.Selection([
+                                ("binary", "binary"), 
+                                ("boolean", "boolean"), 
+                                ("char", "char"), 
+                                ("date", "date"), 
+                                ("datetime", "datetime"), 
+                                ("float", "float"), 
+                                ("html", "html"), 
+                                ("integer", "integer"), 
+                                ("many2many", "many2many"), 
+                                ("many2one", "many2one"), 
+                                ("monetary", "monetary"), 
+                                ("one2many", "one2many"), 
+                                ("reference", "reference"), 
+                                ("selection", "selection"), 
+                                ("serialized", "serialized"), 
+                                ("text", "text")
+                                ],
+                               string='Field Type', required=True)
+    
     relation_ttype = fields.Selection([('many2one', 'many2one'), ('one2many', 'one2many'), ('many2many', 'many2many')],
                                       'Field Type', compute='_compute_relation_ttype',
                                       fnct_inv='_relation_type_set_inverse', store=False, search=True)
@@ -83,7 +126,7 @@ class IrFields(models.Model):
                                                      'related fields)')
 
     help = fields.Text('Help')
-    delegate = fields.Boolean('Delegate', default=False, help=''' set it to ``True`` to make fields of the target model
+    delegate = fields.Boolean('Delegate', default=True, help=''' set it to ``True`` to make fields of the target model
         accessible from the current model (corresponds to ``_inherits``)''')
     auto_join = fields.Boolean('Auto Join', help='Whether JOINs are generated upon search through that field (boolean, by default ``False``')
     decimal_digits = fields.Char('Decimal Digits', )
@@ -139,7 +182,7 @@ class IrFields(models.Model):
 
     @property
     def groups(self):
-        return ','.join([group.real_xml_id for group in self.group_ids])
+        return ','.join([group.xml_id for group in self.group_ids])
 
     @property
     def define(self):
@@ -281,7 +324,7 @@ class IrFields(models.Model):
         try:
             selection_list = eval(selection)
         except Exception:
-            _logger.warning('Invalid selection list definition for fields.selection', exc_info=True)
+            _logger.warning('Invalid selection list definition for fields.Selection', exc_info=True)
             raise except_orm(_('Error'),
                              _("The Selection Options expression is not a valid Pythonic expression."
                                "Please provide an expression in the [('key','Label'), ...] format."))

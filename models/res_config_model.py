@@ -10,9 +10,9 @@ class SettingModel(models.Model):
 
     _rec_name = 'model'
 
-    module_id = fields.Many2one('builder.ir.module.module', 'Module', required=True, select=1, ondelete='cascade')
+    module_id = fields.Many2one('builder.ir.module.module', 'Module', required=True, index=1, ondelete='cascade')
     sequence = fields.Integer('Sequence')
-    model = fields.Char('Model', required=True, select=1)
+    model = fields.Char('Model', required=True, index=1)
     name = fields.Char('Description', required=True)
 
     field_ids = fields.One2many('builder.res.config.settings.field', 'model_id', 'Fields', required=True, copy=True)

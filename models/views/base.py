@@ -177,7 +177,7 @@ class View(models.Model):
     xml_id = fields.Char('View ID', required=True)
     priority = fields.Integer('Sequence')
 
-    inherit_id = fields.Many2one('builder.ir.ui.view', 'Inherited View', ondelete='cascade', select=True)
+    inherit_id = fields.Many2one('builder.ir.ui.view', 'Inherited View', ondelete='cascade', index=True)
     inherit_children_ids = fields.One2many('builder.ir.ui.view', 'inherit_id', 'Inherit Views')
     field_parent = fields.Char('Child Field')
 
