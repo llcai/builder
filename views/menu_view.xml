@@ -25,24 +25,32 @@
                     <sheet>
                         <group>
                             <group>
+                                <field name="id" attrs="{ 'readonly':True}"/>
+                                
 
                                 <field name="module_id"/>
                             
                                 <field name="name"/>
                                 <field name="xml_id"/>
+
+                                <field name="action_type" />
+                                <field name="action_module" options="{'no_create': True}" context="{'default_module_id': module_id}" domain="[('module_id', '=' , module_id)]" attrs="{'invisible': [('action_type', 'not in', ['module'])], 'readonly': [('action_type', 'not in', ['module'])], 'required': [('action_type', 'in', ['module'])]}" />
+                                <field name="action_system" attrs="{'invisible': [('action_type', 'not in', ['system'])], 'readonly': [('action_type', 'not in', ['system'])]}" />
+                                <field name="action_system_ref" attrs="{'invisible': [('action_type', 'not in', ['system'])], 'readonly': [('action_type', 'not in', ['system'])], 'required': [('action_type', 'in', ['system'])]}" />
+                            
+
+
+                            </group>
+                            <group>
+                                <field name="complete_name" />
+                                <field name="sequence" />
                                 <field name="parent_type"/>
                                 <field name="module_id" invisible="1"/>
                                 <field name="parent_id" domain="[('module_id', '=' , module_id)]" attrs="{'invisible': [('parent_type', 'not in', ['module'])], 'readonly': [('parent_type', 'not in', ['module'])], 'required': [('parent_type', 'in', ['module'])]}" />
                                 <field name="parent_menu_id" attrs="{'invisible': [('parent_type', 'not in', ['system'])], 'readonly': [('parent_type', 'not in', ['system'])]}" />
                                 <field name="parent_ref" attrs="{'invisible': [('parent_type', 'not in', ['system'])], 'readonly': [('parent_type', 'not in', ['system'])], 'required': [('parent_type', 'in', ['system'])]}" />
-                            </group>
-                            <group>
-                                <field name="complete_name" />
-                                <field name="sequence" />
-                                <field name="action_type" />
-                                <field name="action_module" options="{'no_create': True}" context="{'default_module_id': module_id}" domain="[('module_id', '=' , module_id)]" attrs="{'invisible': [('action_type', 'not in', ['module'])], 'readonly': [('action_type', 'not in', ['module'])], 'required': [('action_type', 'in', ['module'])]}" />
-                                <field name="action_system" attrs="{'invisible': [('action_type', 'not in', ['system'])], 'readonly': [('action_type', 'not in', ['system'])]}" />
-                                <field name="action_system_ref" attrs="{'invisible': [('action_type', 'not in', ['system'])], 'readonly': [('action_type', 'not in', ['system'])], 'required': [('action_type', 'in', ['system'])]}" />
+                                
+                            
                             </group>
                         </group>
                         <notebook>
@@ -50,7 +58,10 @@
                                 <field name="group_ids" domain="[('module_id', '=', module_id)]"/>
                             </page>
                             <page string="Submenus">
-                                <field name="child_ids" nolabel="1">
+                                <!--
+                                <field name="child_ids" nolabel="1" >
+                                -->
+                                <field name="child_ids" nolabel="1"  context="{'default_module_id': module_id,  'default_parent_type':'module','default_parent_id':id }" >
                                     <tree string="Menus">
                                         <field name="sequence" />
                                         <field name="name" />

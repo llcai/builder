@@ -893,7 +893,7 @@ msgstr "子字段"
 #. module: builder
 #: model:ir.model.fields,field_description:builder.field_builder_ir_ui_menu_child_ids
 msgid "Child Ids"
-msgstr "字ids"
+msgstr "字IDs"
 
 #. module: builder
 #: code:addons/builder/models/fields.py:269
@@ -3859,18 +3859,18 @@ msgstr "Model Method"
 #: model:ir.model.fields,field_description:builder.field_builder_views_selector_model_name
 #: model:ir.model.fields,field_description:builder.field_builder_views_tree_model_name
 msgid "Model Name"
-msgstr "模型名称/Model Name"
+msgstr "模型名称"
 
 #. module: builder
 #: code:addons/builder/models/module.py:306
 #, python-format
 msgid "Model Rules"
-msgstr "模型规则/Model Rules"
+msgstr "访问规则"
 
 #. module: builder
 #: model:ir.ui.view,arch_db:builder.module_form
 msgid "Model View"
-msgstr "模型视图/Model View"
+msgstr "模型视图"
 
 #. module: builder
 #: model:ir.model.fields,field_description:builder.field_builder_ir_ui_view_model_id
@@ -3882,7 +3882,7 @@ msgstr "模型视图/Model View"
 #: model:ir.model.fields,field_description:builder.field_builder_views_search_model_id
 #: model:ir.model.fields,field_description:builder.field_builder_views_tree_model_id
 msgid "Model id"
-msgstr "模型id/Model id"
+msgstr "模型"
 
 #. module: builder
 #: model:ir.model.fields,help:builder.field_builder_ir_act_window_model_id

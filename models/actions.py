@@ -5,10 +5,9 @@ __author__ = 'one'
 # from openerp import models, api, fields, _
 from openerp.osv import osv
 from openerp import SUPERUSER_ID
-from openerp import api
+from openerp import models, fields, api, tools, _
 
-
-class actions(osv.osv):
+class actions(models.Model):
     _name = 'builder.ir.actions.actions'
     _table = 'builder_ir_actions'
     _order = 'name'
@@ -31,7 +30,7 @@ class actions(osv.osv):
                                                                                  xml_id=self.xml_id)
 
 
-class ir_actions_act_url(osv.osv):
+class ir_actions_act_url(models.Model):
     _name = 'builder.ir.actions.act_url'
     _table = 'builder_ir_act_url'
     _inherit = 'builder.ir.actions.actions'
@@ -52,7 +51,7 @@ class ir_actions_act_url(osv.osv):
     }
 
 
-class ir_actions_act_window(osv.osv):
+class ir_actions_act_window(models.Model):
     _name = 'builder.ir.actions.act_window'
     _table = 'builder_ir_act_window'
     _inherit = 'builder.ir.actions.actions'

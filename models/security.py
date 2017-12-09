@@ -1,22 +1,26 @@
-from openerp import fields
 
 __author__ = 'one'
 
 # from openerp import models, api, fields, _
+#from openerp.osv import osv
+from openerp import models, fields, api, tools, _
 from openerp.osv import osv
 from openerp import SUPERUSER_ID
 from openerp import _, api
 
-
-class Groups(osv.osv):
+class Groups(models.Model):
     _name = "builder.res.groups"
     _description = "Access Groups"
     _rec_name = 'full_name'
     _order = 'sequence, name'
 
-    def _get_full_name(self, cr, uid, ids, field, arg, context=None):
+
+    """
+    #def _get_full_name(self, cr, uid, ids, field, arg, context=None):
+    def _get_full_name(self):
         res = {}
-        for g in self.browse(cr, uid, ids, context):
+        #for g in self.browse(cr, uid, ids, context):
+        for g in self.browse():
             if (g.category_type == 'system') and g.category_id:
                 res[g.id] = '%s / %s' % (g.category_id.name, g.name)
             elif (g.category_type == 'system') and g.category_ref:
@@ -26,6 +30,19 @@ class Groups(osv.osv):
             else:
                 res[g.id] = g.name
         return res
+    """
+
+
+
+    @api.depends('category_id.name', 'name')
+    def _get_full_name(self):
+        # Important: value must be stored in environment of group, not group1!
+        for group, group1 in zip(self, self.sudo()):
+            if group1.category_id:
+                group.full_name = '%s / %s' % (group1.category_id.name, group1.name)
+            else:
+                group.full_name = group1.name
+
 
     def _get_trans_implied(self, cr, uid, ids, field, arg, context=None):
         "computes the transitive closure of relation implied_ids"
@@ -104,7 +121,7 @@ class Groups(osv.osv):
                                                                              xml_id=self.xml_id)
 
 
-class IrModelAccess(osv.osv):
+class IrModelAccess(models.Model):
     _name = 'builder.ir.model.access'
 
     module_id = fields.Many2one('builder.ir.module.module', 'Module', ondelete='cascade')
@@ -122,7 +139,7 @@ class IrModelAccess(osv.osv):
     #         vals['module_id'] = self.pool['builder.ir.model'].search(cr, uid, [('id', '=', vals['model_id'])])
 
 
-class IrRule(osv.osv):
+class IrRule(models.Model):
     _name = 'builder.ir.rule'
     _order = 'model_id, name'
 

@@ -2,6 +2,7 @@ import math
 from openerp.tools import graph
 from openerp import tools
 from openerp.osv import osv
+from openerp import models, fields, api, tools, _
 
 __author__ = 'one'
 
@@ -193,7 +194,7 @@ def tree_order(self, node, last=0):
         return last
 
 
-class view(osv.osv):
+class view(models.Model):
     _inherit = 'ir.ui.view'
 
     def graph_get(self, cr, uid, id, model, node_obj, conn_obj, src_node, des_node, label, scale, context=None):

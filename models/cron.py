@@ -9,12 +9,12 @@ from openerp.tools.safe_eval import safe_eval as eval
 from openerp.tools.translate import _
 from openerp.modules import load_information_from_description_file
 
-from openerp import fields
+from openerp import models, fields, api
 
 _logger = logging.getLogger(__name__)
 
 
-class ir_cron(osv.osv):
+class ir_cron(models.Model):
     """ Model describing cron jobs (also called actions or tasks).
     """
 
